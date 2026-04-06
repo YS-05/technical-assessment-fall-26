@@ -14,7 +14,7 @@ For this assessment, you will be building a Single Page Application (SPA) center
 # Core Requirements
 Your app must include the following features:
 - The application should run on a single page without needing to reload the browser when navigating between different components or views.
-- An interesting and beautiful frontend design with a catchy title, apt description, and cool fonts and colors that looks good on any screen size. It probably makes sense for your frontend to be based around the theming of your favorite team, but don't let me hinder your creativity!
+- An interesting and beautiful frontend design with a catchy title, apt description, and cool fonts and colors that looks good on any screen size. It probably makes sense for your frontend to be based around the theming of your favorite team, but don't let me hinder your creativity! Although I don't like Lando Norris, his website is amazing. Feel free to use it for inspiration: [here](https://landonorris.com/) or check out my favorite driver's website: [here](https://charlesleclerc.com/en/).
 - Successfully fetch and render data from an external F1 API.
 - Display your F1 data (e.g., race results, driver standings, lap times) in a table. The table should be capped at **20 rows per page.** Include functional Next/Previous arrows to navigate throughout the entire dataset. Also include a search bar that filters the dataset based on simple text input.
 - Include at least one chart or graph (e.g., a bar chart of points, a line graph of lap times) that visualizes the data you pulled from the API. You can use libraries like Chart.js, Recharts, or D3.
