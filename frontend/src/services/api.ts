@@ -3,12 +3,15 @@ import type { RaceResult, PaginatedRaceResults } from "../types/RaceResults";
 const BASE_URL = "http://localhost:3000/api/f1";
 
 export async function getRaceResults(
-    page: number
+    page: number,
+    search: string
 ): Promise<PaginatedRaceResults> {
+    const params = new URLSearchParams({
+        page: String(page),
+        search,
+    });
 
-    const res = await fetch(
-        `${BASE_URL}?page=${page}`
-    );
+    const res = await fetch(`${BASE_URL}?${params.toString()}`);
 
     if (!res.ok) {
         throw new Error("Failed to fetch race results");

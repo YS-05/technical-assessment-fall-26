@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, Button, CircularProgress, Pagination, Stack, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Pagination, Stack, Typography, TextField } from "@mui/material";
 import RaceResultsTable from "../components/RaceResultsTable";
 import { deleteRaceResults, getRaceResults, syncRaceResults } from "../services/api";
 import type { RaceResult } from "../types/RaceResults";
@@ -8,13 +8,15 @@ export default function RaceResults() {
   const [results, setResults] = useState<RaceResult[]>([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
+  const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [debouncedSearch, setDebouncedSearch] = useState("");
 
-  const loadResults = async (pageNumber: number) => {
+  const loadResults = async (pageNumber: number, searchValue: string) => {
     try {
       setLoading(true);
-      const data = await getRaceResults(pageNumber);
+      const data = await getRaceResults(pageNumber, searchValue);
       setResults(data.results);
       setPage(data.currentPage);
       setTotalPages(data.totalPages);
@@ -29,7 +31,7 @@ export default function RaceResults() {
     try {
       setMessage("Syncing...");
       await syncRaceResults();
-      await loadResults(1);
+      await loadResults(1, search);
       setMessage("Sync complete");
     } catch {
       setMessage("Sync failed");
@@ -40,7 +42,7 @@ export default function RaceResults() {
     try {
       setMessage("Deleting...");
       await deleteRaceResults();
-      await loadResults(1);
+      await loadResults(1, search);
       setMessage("All race data deleted");
     } catch {
       setMessage("Delete failed");
@@ -48,12 +50,26 @@ export default function RaceResults() {
   };
 
   const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
-    loadResults(value);
-  };
+  loadResults(value, search);
+};
+
+const handleSearchChange = (
+  event: React.ChangeEvent<HTMLInputElement>
+) => {
+  setSearch(event.target.value);
+};
 
   useEffect(() => {
-    loadResults(1);
-  }, []);
+  loadResults(1, debouncedSearch);
+}, [debouncedSearch]);
+
+  useEffect(() => {
+  const timer = setTimeout(() => {
+    setDebouncedSearch(search);
+  }, 300);
+
+  return () => clearTimeout(timer);
+}, [search]);
 
   return (
     <Box sx={{ p: 4, bgcolor: "primary.main", minHeight: "100vh" }}>
@@ -80,6 +96,21 @@ export default function RaceResults() {
       </Stack>
 
       {message && <Typography sx={{ mb: 2 }}>{message}</Typography>}
+
+      <TextField
+            label="Search race, country, driver, or season"
+            variant="outlined"
+            value={search}
+            onChange={handleSearchChange}
+            fullWidth
+            sx={{
+                mb: 3,
+                bgcolor: "white",
+                borderRadius: 1,
+                "& input": { color: "black" },
+                "& .MuiInputLabel-root": { color: "black" },
+            }}
+        />
 
       {loading ? (
         <CircularProgress />

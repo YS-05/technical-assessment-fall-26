@@ -15,8 +15,8 @@ const redBullTheme = createTheme({
             main: "#ff3b30",      // F1 red
         },
         background: {
-            default: "#0A1F5C",   // lighter navy 
-            paper: "#0D1B3E",
+            default: "#070736",   // lighter navy 
+            paper: "#070736",
         },
         text: {
             primary: "#FFFFFF",

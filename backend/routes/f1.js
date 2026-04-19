@@ -91,9 +91,26 @@ router.get('/', async (req, res) => {
     try {
         const page = parseInt(req.query.page, 10) || 1;
         const skip = (page - 1) * 15;
-        const totalResults = await RaceResult.countDocuments();
+        const search = req.query.search?.trim() || "";
+        let query = {};
 
-        const results = await RaceResult.find()
+        if (search) {
+            const regex = new RegExp(search, "i");
+            query = {
+                $or: [
+                    { raceName: regex },
+                    { country: regex },
+                    { location: regex },
+                    { "driver1.name": regex },
+                    { "driver2.name": regex },
+                    { season: Number(search) || -1 },
+                ],
+            };
+        }
+
+        const totalResults = await RaceResult.countDocuments(query);
+
+        const results = await RaceResult.find(query)
             .sort({ season: -1, round: -1 })
             .skip(skip)
             .limit(15);
