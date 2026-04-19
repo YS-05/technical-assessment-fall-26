@@ -5,6 +5,7 @@ const cors = require('cors');
 const f1Routes = require('./routes/f1');
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
@@ -15,7 +16,7 @@ mongoose
     .connect(process.env.MONGO_URI)
     .then(() => {
         console.log('MongoDB connected');
-        app.listen(3000, () => console.log('Server running on http://localhost:3000'));
+        app.listen(PORT, () => console.log(`Server running on ${PORT}`));
     })
     .catch((err) => {
         console.error('MongoDB connection error:', err);
