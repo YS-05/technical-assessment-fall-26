@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, Button, CircularProgress, Stack, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Pagination, Stack, Typography } from "@mui/material";
 import RaceResultsTable from "../components/RaceResultsTable";
 import { deleteRaceResults, getRaceResults, syncRaceResults } from "../services/api";
 import type { RaceResult } from "../types/RaceResults";
@@ -8,12 +8,16 @@ export default function RaceResults() {
   const [results, setResults] = useState<RaceResult[]>([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
-  const loadResults = async () => {
+  const loadResults = async (pageNumber: number) => {
     try {
       setLoading(true);
-      const data = await getRaceResults();
-      setResults(data);
+      const data = await getRaceResults(pageNumber);
+      setResults(data.results);
+      setPage(data.currentPage);
+      setTotalPages(data.totalPages);
     } catch {
       setMessage("Failed to load race results");
     } finally {
@@ -25,7 +29,7 @@ export default function RaceResults() {
     try {
       setMessage("Syncing...");
       await syncRaceResults();
-      await loadResults();
+      await loadResults(1);
       setMessage("Sync complete");
     } catch {
       setMessage("Sync failed");
@@ -36,28 +40,32 @@ export default function RaceResults() {
     try {
       setMessage("Deleting...");
       await deleteRaceResults();
-      await loadResults();
+      await loadResults(1);
       setMessage("All race data deleted");
     } catch {
       setMessage("Delete failed");
     }
   };
 
+  const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
+    loadResults(value);
+  };
+
   useEffect(() => {
-    loadResults();
+    loadResults(1);
   }, []);
 
   return (
-    <Box sx={{ p: 4, bgcolor: "primary.main" }}>
-     <Stack
-  direction="row"
-  sx={{
-    justifyContent: "space-between",
-    alignItems: "center",
-    mb: 3,
-  }}
->
-  <Typography variant="h4" sx={{ fontWeight: 700 }}>
+    <Box sx={{ p: 4, bgcolor: "primary.main", minHeight: "100vh" }}>
+      <Stack
+        direction="row"
+        sx={{
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: 3,
+        }}
+      >
+        <Typography variant="h4" sx={{ fontWeight: 700 }}>
           Red Bull Race Results
         </Typography>
 
@@ -73,7 +81,22 @@ export default function RaceResults() {
 
       {message && <Typography sx={{ mb: 2 }}>{message}</Typography>}
 
-      {loading ? <CircularProgress /> : <RaceResultsTable results={results} />}
+      {loading ? (
+        <CircularProgress />
+      ) : (
+        <>
+          <RaceResultsTable results={results} />
+
+          <Stack sx={{ mt: 3, alignItems: "center" }}>
+            <Pagination
+              count={totalPages}
+              page={page}
+              onChange={handlePageChange}
+              color="primary"
+            />
+          </Stack>
+        </>
+      )}
     </Box>
   );
 }

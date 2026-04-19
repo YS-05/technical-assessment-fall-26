@@ -21,3 +21,10 @@ export interface RaceResult {
     teamPoints: number;
     fetchedAt: string;
 }
+
+export interface PaginatedRaceResults {
+    results: RaceResult[];
+    currentPage: number;
+    totalPages: number;
+    totalResults: number;
+}

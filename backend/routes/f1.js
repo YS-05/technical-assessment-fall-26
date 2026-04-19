@@ -88,8 +88,30 @@ router.post('/sync', async (req, res) => {
 });
 
 router.get('/', async (req, res) => {
-    const results = await RaceResult.find().sort({ season: -1, round: -1 });
-    res.json(results);
+    try {
+        const page = parseInt(req.query.page, 10) || 1;
+        const skip = (page - 1) * 15;
+        const totalResults = await RaceResult.countDocuments();
+
+        const results = await RaceResult.find()
+            .sort({ season: -1, round: -1 })
+            .skip(skip)
+            .limit(15);
+
+        res.json({
+            results,
+            currentPage: page,
+            totalPages: Math.ceil(totalResults / 15),
+            totalResults,
+        });
+
+    } catch (err) {
+        console.error(err);
+
+        res.status(500).json({
+            error: 'Failed to fetch results',
+        });
+    }
 });
 
 router.delete('/', async (req, res) => {

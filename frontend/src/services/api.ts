@@ -1,12 +1,19 @@
-import type { RaceResult } from "../types/RaceResults";
+import type { RaceResult, PaginatedRaceResults } from "../types/RaceResults";
 
 const BASE_URL = "http://localhost:3000/api/f1";
 
-export async function getRaceResults(): Promise<RaceResult[]> {
-    const res = await fetch(BASE_URL);
+export async function getRaceResults(
+    page: number
+): Promise<PaginatedRaceResults> {
+
+    const res = await fetch(
+        `${BASE_URL}?page=${page}`
+    );
+
     if (!res.ok) {
         throw new Error("Failed to fetch race results");
     }
+
     return res.json();
 }
 
