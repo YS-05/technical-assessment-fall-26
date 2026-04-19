@@ -12,6 +12,16 @@ const standingsHistorySchema = new mongoose.Schema({
     bestDriverPoints: Number,
     bestDriverWins: Number,
 
+    drivers: [
+        {
+            driverId: String,
+            name: String,
+            position: Number,
+            points: Number,
+            wins: Number,
+        }
+    ],
+
     fetchedAt: Date,
 });
 

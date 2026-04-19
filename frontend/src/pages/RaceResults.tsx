@@ -82,7 +82,7 @@ const handleSearchChange = (
         }}
       >
         <Typography variant="h4" sx={{ fontWeight: 700 }}>
-          Red Bull Race Results
+          Race Results
         </Typography>
 
         <Stack direction="row" spacing={2}>

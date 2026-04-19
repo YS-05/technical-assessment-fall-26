@@ -23,7 +23,7 @@ function Navbar() {
   }}
 >
       <Toolbar>
-        <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: "bold" }}>
+        <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: "bold", color: "error.main" }}>
           Red Bull Analytics
         </Typography>
 
@@ -34,7 +34,7 @@ function Navbar() {
               component={RouterLink}
               to={path}
               sx={{
-                color: pathname === path ? "text.primary" : "text.disabled",
+                color: pathname === path ? "error.main" : "text.disabled",
                 fontWeight: pathname === path ? "bold" : "normal",
               }}
             >

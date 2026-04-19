@@ -1,11 +1,11 @@
 const express = require('express');
 const axios = require('axios');
 const RaceResult = require('../models/RaceResults');
-const { getStandingsHistory } = require('../services/standingService');
 const {
     syncStandingsHistory,
     getStandingsHistoryFromDb,
 } = require('../services/standingService');
+const { getDashboardData } = require('../services/dashboardService');
 
 const router = express.Router();
 
@@ -161,6 +161,18 @@ router.get('/analytics/standings-history', async (req, res) => {
         console.error(err);
         res.status(500).json({
             error: 'Failed to fetch standings history',
+        });
+    }
+});
+
+router.get('/dashboard', async (req, res) => {
+    try {
+        const data = await getDashboardData();
+        res.json(data);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            error: 'Failed to fetch dashboard data',
         });
     }
 });

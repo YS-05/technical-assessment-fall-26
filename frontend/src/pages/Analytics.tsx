@@ -32,7 +32,7 @@ export default function Analytics() {
   return (
     <Box sx={{ p: 4, bgcolor: "primary.main", minHeight: "100vh" }}>
       <Typography variant="h4" sx={{ fontWeight: 700, mb: 3 }}>
-        Red Bull Analytics
+        Historical Graphs
       </Typography>
 
       {message && (

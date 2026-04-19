@@ -41,6 +41,14 @@ async function syncStandingsHistory() {
                     constructor => constructor.constructorId === 'red_bull'
                 )
             );
+            const allRedBullDrivers = redBullDrivers.map(driver => ({
+                driverId: driver.Driver.driverId,
+                name: `${driver.Driver.givenName} ${driver.Driver.familyName}`,
+                position: parseInt(driver.position, 10),
+                points: parseFloat(driver.points),
+                wins: parseInt(driver.wins, 10),
+            }));
+
             if (!redBullConstructor || redBullDrivers.length === 0) {
                 errors.push({
                     season,
@@ -66,6 +74,7 @@ async function syncStandingsHistory() {
                         bestDriverName: `${bestDriver.Driver.givenName} ${bestDriver.Driver.familyName}`,
                         bestDriverPoints: parseFloat(bestDriver.points),
                         bestDriverWins: parseInt(bestDriver.wins, 10),
+                        drivers: allRedBullDrivers,
                         fetchedAt: new Date(),
                     },
                 },

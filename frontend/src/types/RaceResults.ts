@@ -48,3 +48,27 @@ export interface StandingsHistoryResponse {
     constructorHistory: ConstructorHistoryPoint[];
     bestDriverHistory: BestDriverHistoryPoint[];
 }
+
+export interface CurrentDriverStanding {
+    driverId: string;
+    name: string;
+    position: number;
+    points: number;
+    wins: number;
+}
+
+export interface TopDriverByAvgPoints {
+    driverId: string;
+    driver: string;
+    totalPoints: number;
+    races: number;
+    avgPoints: number;
+}
+
+export interface DashboardData {
+    allTimeConstructorChampionships: number;
+    allTimeDriverChampionships: number;
+    currentConstructorStanding: number | null;
+    currentDriverStandings: CurrentDriverStanding[];
+    topDriversByAvgPoints: TopDriverByAvgPoints[];
+}

@@ -1,4 +1,4 @@
-import type { RaceResult, PaginatedRaceResults, StandingsHistoryResponse } from "../types/RaceResults";
+import type { RaceResult, PaginatedRaceResults, StandingsHistoryResponse, DashboardData } from "../types/RaceResults";
 
 const BASE_URL = "http://localhost:3000/api/f1";
 
@@ -49,6 +49,16 @@ export async function getStandingsHistory(): Promise<StandingsHistoryResponse> {
 
     if (!res.ok) {
         throw new Error("Failed to fetch standings history");
+    }
+
+    return res.json();
+}
+
+export async function getDashboardData(): Promise<DashboardData> {
+    const res = await fetch(`${BASE_URL}/dashboard`);
+
+    if (!res.ok) {
+        throw new Error("Failed to fetch dashboard data");
     }
 
     return res.json();

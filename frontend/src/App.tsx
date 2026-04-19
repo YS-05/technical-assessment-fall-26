@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import RaceResults from "./pages/RaceResults";
 import Analytics from "./pages/Analytics";
+import Dashboard from "./pages/Dashboard";
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/data" element={<RaceResults />} />
           <Route path="/analytics" element={<Analytics />} />
+          <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
     </ThemeProvider>
   );

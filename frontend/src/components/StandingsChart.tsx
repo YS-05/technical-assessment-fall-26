@@ -71,12 +71,6 @@ export default function StandingsHistoryCharts({
     ],
   };
 
-  const maxStanding = Math.max(
-    ...constructorHistory.map((point) => point.position),
-    ...bestDriverHistory.map((point) => point.position),
-    10
-  );
-
   const commonOptions = {
     responsive: true,
     maintainAspectRatio: false,
@@ -84,7 +78,7 @@ export default function StandingsHistoryCharts({
       y: {
         reverse: true,
         min: 1,
-        max: maxStanding,
+        max: 22,
         ticks: {
           stepSize: 1,
         },
@@ -114,7 +108,7 @@ export default function StandingsHistoryCharts({
           Red Bull Constructor Standing by Season
         </Typography>
         <Box sx={{ height: 350 }}>
-          <Line data={constructorData} options={commonOptions} />
+          <Line data={constructorData} options={{ ...commonOptions, scales: { ...commonOptions.scales, y: { ...commonOptions.scales.y, max: 11 } } }} />
         </Box>
       </Paper>
 
