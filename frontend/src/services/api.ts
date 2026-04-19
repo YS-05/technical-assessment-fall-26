@@ -1,6 +1,6 @@
 import type { PaginatedRaceResults, StandingsHistoryResponse, DashboardData } from "../types/f1";
 
-const BASE_URL = "http://localhost:3000/api/f1"; // for local backend
+const BASE_URL = `${import.meta.env.VITE_API_URL}/api/f1`;
 
 export async function getRaceResults(
     page: number,
