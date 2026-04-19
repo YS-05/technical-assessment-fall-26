@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 
 import { getDashboardData } from "../services/api";
-import type { DashboardData } from "../types/RaceResults";
+import type { DashboardData } from "../types/f1";
 
 function StatCard({
   title,
@@ -80,8 +80,8 @@ export default function Dashboard() {
   }
 
   return (
-    <Box sx={{ p: 4, bgcolor: "primary.main", minHeight: "100vh" }}>
-      <Typography variant="h4" sx={{ fontWeight: 700, mb: 3 }}>
+    <Box sx={{ p: 4, bgcolor: "primary.main", minHeight: "100vh - 64px" }}>
+      <Typography variant="h4" sx={{ fontWeight: 700, mb: 3, color: "secondary.main" }}>
         Dashboard
       </Typography>
 
@@ -90,8 +90,6 @@ export default function Dashboard() {
           {message}
         </Typography>
       )}
-
-      {/* Top Stat Cards */}
 
       <Grid container spacing={3} sx={{ mb: 4 }}>
 
@@ -118,11 +116,7 @@ export default function Dashboard() {
 
       </Grid>
 
-      {/* Lower Section */}
-
       <Grid container spacing={3}>
-
-        {/* Current Drivers */}
 
         <Grid size={{ xs: 12, md: 5 }}>
           <Paper sx={{ p: 3, borderRadius: 3 }}>
@@ -160,8 +154,6 @@ export default function Dashboard() {
             </Stack>
           </Paper>
         </Grid>
-
-        {/* Top Drivers Table */}
 
         <Grid size={{ xs: 12, md: 7 }}>
           <Paper sx={{ p: 3, borderRadius: 3 }}>

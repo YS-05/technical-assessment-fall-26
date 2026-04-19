@@ -8,7 +8,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import type { RaceResult } from "../types/RaceResults";
+import type { RaceResult } from "../types/f1";
 
 interface Props {
   results: RaceResult[];

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Box, Button, CircularProgress, Pagination, Stack, Typography, TextField } from "@mui/material";
 import RaceResultsTable from "../components/RaceResultsTable";
-import { deleteRaceResults, getRaceResults, syncRaceResults } from "../services/api";
-import type { RaceResult } from "../types/RaceResults";
+import { getRaceResults } from "../services/api";
+import type { RaceResult } from "../types/f1";
 
 export default function RaceResults() {
   const [results, setResults] = useState<RaceResult[]>([]);
@@ -24,28 +24,6 @@ export default function RaceResults() {
       setMessage("Failed to load race results");
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleSync = async () => {
-    try {
-      setMessage("Syncing...");
-      await syncRaceResults();
-      await loadResults(1, search);
-      setMessage("Sync complete");
-    } catch {
-      setMessage("Sync failed");
-    }
-  };
-
-  const handleDelete = async () => {
-    try {
-      setMessage("Deleting...");
-      await deleteRaceResults();
-      await loadResults(1, search);
-      setMessage("All race data deleted");
-    } catch {
-      setMessage("Delete failed");
     }
   };
 
@@ -81,18 +59,9 @@ const handleSearchChange = (
           mb: 3,
         }}
       >
-        <Typography variant="h4" sx={{ fontWeight: 700 }}>
+        <Typography variant="h4" sx={{ fontWeight: 700, color: "secondary.main" }}>
           Race Results
         </Typography>
-
-        <Stack direction="row" spacing={2}>
-          <Button variant="contained" onClick={handleSync}>
-            Sync Data
-          </Button>
-          <Button variant="outlined" color="error" onClick={handleDelete}>
-            Delete All
-          </Button>
-        </Stack>
       </Stack>
 
       {message && <Typography sx={{ mb: 2 }}>{message}</Typography>}

@@ -18,7 +18,7 @@ import { Line } from "react-chartjs-2";
 import type {
   ConstructorHistoryPoint,
   BestDriverHistoryPoint,
-} from "../types/RaceResults";
+} from "../types/f1";
 import { useTheme } from "@mui/material";
 
 ChartJS.register(

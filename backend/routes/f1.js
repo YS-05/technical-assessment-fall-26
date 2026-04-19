@@ -9,7 +9,7 @@ const { getDashboardData } = require('../services/dashboardService');
 
 const router = express.Router();
 
-const START_SEASON = 2005; // first red bull season
+const START_SEASON = 2005;
 const CURRENT_SEASON = new Date().getFullYear();
 const DELAY_MS = 500; // for rate limits
 

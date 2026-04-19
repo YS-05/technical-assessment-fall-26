@@ -4,7 +4,7 @@ import StandingsHistoryCharts from "../components/StandingsChart";
 import {
   getStandingsHistory,
 } from "../services/api";
-import type { ConstructorHistoryPoint, BestDriverHistoryPoint } from "../types/RaceResults"
+import type { ConstructorHistoryPoint, BestDriverHistoryPoint } from "../types/f1"
 
 export default function Analytics() {
   const [constructorHistory, setConstructorHistory] = useState<ConstructorHistoryPoint[]>([]);
@@ -31,7 +31,7 @@ export default function Analytics() {
 
   return (
     <Box sx={{ p: 4, bgcolor: "primary.main", minHeight: "100vh" }}>
-      <Typography variant="h4" sx={{ fontWeight: 700, mb: 3 }}>
+      <Typography variant="h4" sx={{ fontWeight: 700, mb: 3, color: "secondary.main" }}>
         Historical Graphs
       </Typography>
 
