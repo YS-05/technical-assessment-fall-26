@@ -11,6 +11,7 @@ const Home = () => {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
+        px: { xs: 5, sm: 6 },
 
         background: `
   linear-gradient(
@@ -56,12 +57,15 @@ animation: "gradientShift 10s ease infinite",
           zIndex: 2,
           fontWeight: "bold",
           color: "error.main",
+          fontSize: { xs: "3rem", md: "6rem" },
+          textAlign: "center"
         }}
       >
         Red Bull Racing
       </Typography>
 
       <Typography
+      variant="h6"
         sx={{
           zIndex: 2,
           mt: 3,
@@ -75,7 +79,7 @@ animation: "gradientShift 10s ease infinite",
       </Typography>
 
       <Stack
-        direction="row"
+        direction={{ xs: "column", sm: "row" }}
         spacing={2}
         sx={{
           justifyContent: "center",

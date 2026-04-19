@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, Button, CircularProgress, Pagination, Stack, Typography, TextField } from "@mui/material";
+import { Box, CircularProgress, Pagination, Stack, Typography, TextField } from "@mui/material";
 import RaceResultsTable from "../components/RaceResultsTable";
 import { getRaceResults } from "../services/api";
 import type { RaceResult } from "../types/f1";
