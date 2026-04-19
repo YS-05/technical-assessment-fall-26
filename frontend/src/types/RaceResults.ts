@@ -28,3 +28,23 @@ export interface PaginatedRaceResults {
     totalPages: number;
     totalResults: number;
 }
+
+export interface ConstructorHistoryPoint {
+    season: number;
+    position: number;
+    points: number;
+    wins: number;
+}
+
+export interface BestDriverHistoryPoint {
+    season: number;
+    position: number;
+    driver: string;
+    points: number;
+    wins: number;
+}
+
+export interface StandingsHistoryResponse {
+    constructorHistory: ConstructorHistoryPoint[];
+    bestDriverHistory: BestDriverHistoryPoint[];
+}

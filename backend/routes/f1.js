@@ -1,6 +1,11 @@
 const express = require('express');
 const axios = require('axios');
 const RaceResult = require('../models/RaceResults');
+const { getStandingsHistory } = require('../services/standingService');
+const {
+    syncStandingsHistory,
+    getStandingsHistoryFromDb,
+} = require('../services/standingService');
 
 const router = express.Router();
 
@@ -127,6 +132,35 @@ router.get('/', async (req, res) => {
 
         res.status(500).json({
             error: 'Failed to fetch results',
+        });
+    }
+});
+
+router.post('/analytics/sync', async (req, res) => {
+    try {
+        const result = await syncStandingsHistory();
+
+        res.json({
+            message: 'Standings history sync complete',
+            totalProcessed: result.totalProcessed,
+            errors: result.errors,
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            error: 'Failed to sync standings history',
+        });
+    }
+});
+
+router.get('/analytics/standings-history', async (req, res) => {
+    try {
+        const data = await getStandingsHistoryFromDb();
+        res.json(data);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            error: 'Failed to fetch standings history',
         });
     }
 });

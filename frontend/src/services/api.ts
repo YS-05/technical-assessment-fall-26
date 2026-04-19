@@ -1,4 +1,4 @@
-import type { RaceResult, PaginatedRaceResults } from "../types/RaceResults";
+import type { RaceResult, PaginatedRaceResults, StandingsHistoryResponse } from "../types/RaceResults";
 
 const BASE_URL = "http://localhost:3000/api/f1";
 
@@ -39,6 +39,16 @@ export async function deleteRaceResults() {
 
     if (!res.ok) {
         throw new Error("Failed to delete race results");
+    }
+
+    return res.json();
+}
+
+export async function getStandingsHistory(): Promise<StandingsHistoryResponse> {
+    const res = await fetch(`${BASE_URL}/analytics/standings-history`);
+
+    if (!res.ok) {
+        throw new Error("Failed to fetch standings history");
     }
 
     return res.json();
