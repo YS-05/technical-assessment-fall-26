@@ -8,7 +8,6 @@ const driverResultSchema = new mongoose.Schema({
     points: Number,
     grid: Number,
     status: String,
-    fastestLap: String,
 }, { _id: false });
 
 const raceResultSchema = new mongoose.Schema({

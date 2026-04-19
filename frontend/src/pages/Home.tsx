@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import img from "../assets/redbull.jpg"
+import img from "../assets/landingimg.png"
 
 const Home = () => {
   return (

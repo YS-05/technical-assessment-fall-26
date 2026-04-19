@@ -3,9 +3,19 @@ const axios = require('axios');
 const RaceResult = require('../models/RaceResults');
 
 const router = express.Router();
-const F1_URL = 'https://api.jolpi.ca/ergast/f1/2025/constructors/red_bull/results.json';
 
-// Helper: map a driver result from the API
+const START_SEASON = 2005; // first red bull season
+const CURRENT_SEASON = new Date().getFullYear();
+const DELAY_MS = 500; // for rate limits
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function buildUrl(season) {
+    return `https://api.jolpi.ca/ergast/f1/${season}/constructors/red_bull/results.json?limit=100`;
+}
+
 function mapDriver(result) {
     return {
         driverId: result.Driver.driverId,
@@ -15,58 +25,88 @@ function mapDriver(result) {
         points: parseFloat(result.points),
         grid: parseInt(result.grid),
         status: result.status,
-        fastestLap: result.FastestLap?.Time?.time ?? null,
     };
 }
 
 router.post('/sync', async (req, res) => {
-    try {
-        const { data } = await axios.get(F1_URL);
-        const races = data.MRData.RaceTable.Races;
+    let totalProcessed = 0;
+    const errors = [];
+    for (let season = START_SEASON; season <= CURRENT_SEASON; season++) {
+        try {
+            const { data } = await axios.get(buildUrl(season));
+            const races = data.MRData.RaceTable.Races;
 
-        const ops = races.map((race) => {
-            const [r1, r2] = race.Results;
+            if (!races.length) {
+                await sleep(DELAY_MS);
+                continue;
+            }
 
-            const driver1 = mapDriver(r1);
-            const driver2 = r2 ? mapDriver(r2) : null;
-            const teamPoints = driver1.points + (driver2?.points ?? 0);
+            const ops = races.map((race) => {
+                const [r1, r2] = race.Results;
+                const driver1 = mapDriver(r1);
+                const driver2 = r2 ? mapDriver(r2) : null;
+                const teamPoints = driver1.points + (driver2?.points ?? 0);
 
-            return {
-                updateOne: {
-                    filter: { raceId: `${race.season}-${race.round}` },
-                    update: {
-                        $set: {
-                            raceId: `${race.season}-${race.round}`,
-                            season: parseInt(race.season),
-                            round: parseInt(race.round),
-                            date: new Date(race.date),
-                            raceName: race.raceName,
-                            location: race.Circuit.Location.locality,
-                            country: race.Circuit.Location.country,
-                            driver1,
-                            driver2,
-                            teamPoints,
-                            fetchedAt: new Date(),
+                return {
+                    updateOne: {
+                        filter: { raceId: `${race.season}-${race.round}` },
+                        update: {
+                            $set: {
+                                raceId: `${race.season}-${race.round}`,
+                                season: parseInt(race.season),
+                                round: parseInt(race.round),
+                                date: new Date(race.date),
+                                raceName: race.raceName,
+                                location: race.Circuit.Location.locality,
+                                country: race.Circuit.Location.country,
+                                driver1,
+                                driver2,
+                                teamPoints,
+                                fetchedAt: new Date(),
+                            },
                         },
+                        upsert: true,
                     },
-                    upsert: true,
-                },
-            };
-        });
+                };
+            });
 
-        const result = await RaceResult.bulkWrite(ops);
-        res.json({ message: `Synced ${ops.length} races`, result });
+            await RaceResult.bulkWrite(ops);
+            totalProcessed += ops.length;
+            console.log(`Season ${season}: processed ${ops.length} races`);
+        } catch (err) {
+            console.error(`Failed on season ${season}:`, err.message);
+            errors.push({ season, error: err.message });
+        }
+        await sleep(DELAY_MS);
+    }
+
+    res.json({
+        message: 'Full sync complete',
+        totalProcessed,
+        errors,
+    });
+});
+
+router.get('/', async (req, res) => {
+    const results = await RaceResult.find().sort({ season: -1, round: -1 });
+    res.json(results);
+});
+
+router.delete('/', async (req, res) => {
+    try {
+        const result = await RaceResult.deleteMany({});
+
+        res.json({
+            message: 'All race data deleted',
+            deletedCount: result.deletedCount
+        });
 
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: 'Sync failed' });
+        res.status(500).json({
+            error: 'Delete failed'
+        });
     }
-});
-
-// GET all stored results sorted by round
-router.get('/', async (req, res) => {
-    const results = await RaceResult.find().sort({ round: -1 });
-    res.json(results);
 });
 
 module.exports = router;

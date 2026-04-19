@@ -12,7 +12,16 @@ function Navbar() {
   const { pathname } = useLocation();
 
   return (
-    <AppBar position="static" sx={{ bgcolor: "primary.main", px: 3 }}>
+    <AppBar
+  position="sticky"
+  color="transparent"
+  sx={{
+    backgroundColor: "primary.main",
+    px: 3,
+    borderBottom: "1px solid white",
+    boxShadow: "none",
+  }}
+>
       <Toolbar>
         <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: "bold" }}>
           Red Bull Analytics

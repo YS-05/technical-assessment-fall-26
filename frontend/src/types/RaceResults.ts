@@ -1,0 +1,23 @@
+export interface DriverResult {
+    driverId: string;
+    name: string;
+    code: string;
+    position: string;
+    points: number;
+    grid: number | null;
+    status: string;
+}
+
+export interface RaceResult {
+    raceId: string;
+    season: number;
+    round: number;
+    date: string;
+    raceName: string;
+    location: string;
+    country: string;
+    driver1: DriverResult;
+    driver2: DriverResult | null;
+    teamPoints: number;
+    fetchedAt: string;
+}

@@ -4,7 +4,7 @@ const redBullTheme = createTheme({
     palette: {
         mode: "dark",
         primary: {
-            main: "#02030D",      // very dark navy 
+            main: "#000017",      // very dark navy 
             contrastText: "#FFC906",
         },
         secondary: {

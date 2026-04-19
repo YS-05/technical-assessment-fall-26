@@ -1,14 +1,13 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 const f1Routes = require('./routes/f1');
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
-
-// Temporary test route
-app.post('/test', (req, res) => res.json({ ok: true }));
 
 app.use('/api/f1', f1Routes);
 
