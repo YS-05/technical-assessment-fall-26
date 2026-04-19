@@ -42,7 +42,7 @@ export default function Analytics() {
       )}
 
       {loading ? (
-        <CircularProgress />
+        <CircularProgress sx={{ color: "white" }} />
       ) : (
         <StandingsHistoryCharts
           constructorHistory={constructorHistory}

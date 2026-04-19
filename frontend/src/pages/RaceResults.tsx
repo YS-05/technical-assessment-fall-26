@@ -82,7 +82,7 @@ const handleSearchChange = (
         />
 
       {loading ? (
-        <CircularProgress />
+        <CircularProgress sx={{ color: "white" }} />
       ) : (
         <>
           <RaceResultsTable results={results} />

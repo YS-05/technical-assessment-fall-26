@@ -64,7 +64,7 @@ export default function Dashboard() {
   if (loading) {
     return (
       <Box sx={{ p: 4 }}>
-        <CircularProgress />
+        <CircularProgress sx={{ color: "white" }} />
       </Box>
     );
   }
