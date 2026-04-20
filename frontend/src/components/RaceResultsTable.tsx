@@ -41,17 +41,15 @@ export default function RaceResultsTable({ results }: Props) {
               <TableCell>{race.season}</TableCell>
               <TableCell>{race.round}</TableCell>
               <TableCell>{new Date(race.date).toISOString().split("T")[0]}</TableCell>
-              <TableCell>
-                <Typography sx={{ fontWeight: 600 }}>{race.raceName}</Typography>
-              </TableCell>
+              <TableCell>{race.raceName}</TableCell>
               <TableCell>{race.country}</TableCell>
               <TableCell>{race.driver1?.name}</TableCell>
               <TableCell>{race.driver1?.position}</TableCell>
-              <TableCell>{race.driver1?.points}</TableCell>
+              <TableCell sx={{ color: "secondary.main" }}>{race.driver1?.points}</TableCell>
               <TableCell>{race.driver2?.name ?? "-"}</TableCell>
               <TableCell>{race.driver2?.position ?? "-"}</TableCell>
-              <TableCell>{race.driver2?.points ?? "-"}</TableCell>
-              <TableCell>{race.teamPoints}</TableCell>
+              <TableCell sx={{ color: "secondary.main" }}>{race.driver2?.points ?? "-"}</TableCell>
+              <TableCell sx={{ color: "secondary.main", fontWeight: 600 }}>{race.teamPoints}</TableCell>
             </TableRow>
           ))}
         </TableBody>
