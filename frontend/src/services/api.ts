@@ -4,15 +4,15 @@ const BASE_URL = `${import.meta.env.VITE_API_URL}/api/f1`;
 
 export async function getRaceResults(
     page: number,
-    search: string
+    search: string,
+    limit = 20
 ): Promise<PaginatedRaceResults> {
     const params = new URLSearchParams({
         page: String(page),
         search,
+        limit: String(limit),
     });
-
     const res = await fetch(`${BASE_URL}?${params.toString()}`);
-
     if (!res.ok) {
         throw new Error("Failed to fetch race results");
     }

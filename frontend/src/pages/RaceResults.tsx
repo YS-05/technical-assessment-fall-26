@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, CircularProgress, Pagination, Stack, Typography, TextField } from "@mui/material";
+import { Box, CircularProgress, Pagination, Stack, Typography, TextField, MenuItem } from "@mui/material";
 import RaceResultsTable from "../components/RaceResultsTable";
 import { getRaceResults } from "../services/api";
 import type { RaceResult } from "../types/f1";
@@ -12,11 +12,16 @@ export default function RaceResults() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [rowsPerPage, setRowsPerPage] = useState(20);
 
-  const loadResults = async (pageNumber: number, searchValue: string) => {
+  const loadResults = async (
+  pageNumber: number,
+  searchValue: string,
+  limit = rowsPerPage
+) => {
     try {
       setLoading(true);
-      const data = await getRaceResults(pageNumber, searchValue);
+      const data = await getRaceResults(pageNumber, searchValue, limit);
       setResults(data.results);
       setPage(data.currentPage);
       setTotalPages(data.totalPages);
@@ -26,6 +31,14 @@ export default function RaceResults() {
       setLoading(false);
     }
   };
+
+  const handleRowsChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+    const value = Number(event.target.value);
+    setRowsPerPage(value);
+    loadResults(1, search, value);
+    };
 
   const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
   loadResults(value, search);
@@ -37,9 +50,9 @@ const handleSearchChange = (
   setSearch(event.target.value);
 };
 
-  useEffect(() => {
+useEffect(() => {
   loadResults(1, debouncedSearch);
-}, [debouncedSearch]);
+}, [debouncedSearch, rowsPerPage]);
 
   useEffect(() => {
   const timer = setTimeout(() => {
@@ -66,20 +79,49 @@ const handleSearchChange = (
 
       {message && <Typography sx={{ mb: 2 }}>{message}</Typography>}
 
-      <TextField
+      <Stack
+        direction="row"
+        spacing={2}
+        sx={{
+            mb: 3,
+            alignItems: "center",
+        }}
+        >
+        <TextField
             label="Search race, country, driver, or season"
             variant="outlined"
             value={search}
             onChange={handleSearchChange}
             fullWidth
             sx={{
-                mb: 3,
-                bgcolor: "white",
-                borderRadius: 1,
-                "& input": { color: "black" },
-                "& .MuiInputLabel-root": { color: "black" },
+            bgcolor: "white",
+            borderRadius: 3,
+            "& input": { color: "error.main" },
+            "& .MuiInputLabel-root": { color: "error.main" },
             }}
         />
+
+        <TextField
+            select
+            label="Rows"
+            value={rowsPerPage}
+            onChange={handleRowsChange}
+            sx={{
+            width: 140,
+            bgcolor: "white",
+            borderRadius: 3,
+            "& .MuiInputLabel-root": { color: "error.main" },
+            "& .MuiSelect-select": { color: "error.main" },
+            "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "black",
+            },
+            }}
+        >
+            <MenuItem value={10}>10</MenuItem>
+            <MenuItem value={20}>20</MenuItem>
+            <MenuItem value={50}>50</MenuItem>
+        </TextField>
+        </Stack>
 
       {loading ? (
         <CircularProgress sx={{ color: "white" }} />

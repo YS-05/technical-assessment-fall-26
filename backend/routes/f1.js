@@ -95,7 +95,8 @@ router.post('/sync', async (req, res) => {
 router.get('/', async (req, res) => {
     try {
         const page = parseInt(req.query.page, 10) || 1;
-        const skip = (page - 1) * 15;
+        const limit = parseInt(req.query.limit, 10) || 20;
+        const skip = (page - 1) * limit;
         const search = req.query.search?.trim() || "";
         let query = {};
 
@@ -118,12 +119,12 @@ router.get('/', async (req, res) => {
         const results = await RaceResult.find(query)
             .sort({ season: -1, round: -1 })
             .skip(skip)
-            .limit(15);
+            .limit(limit);
 
         res.json({
             results,
             currentPage: page,
-            totalPages: Math.ceil(totalResults / 15),
+            totalPages: Math.ceil(totalResults / limit),
             totalResults,
         });
 
