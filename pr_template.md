@@ -26,13 +26,15 @@ Please check off which features you have implemented:
 - [ ] Includes a custom UI for Boolean search logic (e.g., AND/OR dropdowns or toggles).
 
 ## Screen Recording 
-**Link**: [paste it here]
+**Link**: 
+https://www.loom.com/share/551501dc0d0b4b84b78ecf537d62737c
+https://red-bull-analytics.vercel.app/
 
 ## Written Portion
 1. **How did the project go? What parts of it did you most enjoy / find yourself good at?**
 
-[answer here]
+The project went well overall. I really enjoyed working with new technologies compared to my usual stack. Especially with Express.js, I thought it allowed for much faster prototyping speed. The part that I found myself best at was working with/integrating the different API structures. 
 
 2. **Was this technical assessment what you expected? If you had another two weeks to work on it, what would you add or change?**
 
-[answer here]
+It was mostly what I expected in terms of full-stack development. If I had another 2 weeks, I would focus on further improving the UI/UX, maybe more polish and animations. I would also try to research more into nuanced F1 metrics analysts care about as well as useful metrics that are not commonly surfaced to make the analytics more differentiated. 
